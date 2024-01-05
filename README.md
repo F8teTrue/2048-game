@@ -21,7 +21,7 @@ This is a Python implementation of the popular game 2048 using the Tkinter libra
 This game requires Python 3.11 and the Tkinter library, which is usually included in Python installations by default.
 
 ## Usage
-1. Clone the repository: 'git clone https://github.com/your_username/2048-game.git'
+1. Clone the repository: `git clone https://github.com/your_username/2048-game.git`
 2. Navigate to the repository
-3. Run the game: 'python 2048.py'
+3. Run the game: `python 2048.py`
 
