@@ -1,6 +1,35 @@
 import tkinter as tk
 import random
 
+bgColor = {
+    ' ': '#BBADA0',
+    '2': '#eee4da',
+    '4': '#ede0c8',
+    '8': '#edc850',
+    '16': '#edc53f',
+    '32': '#f67c5f',
+    '64': '#f65e3b',
+    '128': '#edcf72',
+    '256': '#edcc61',
+    '512': '#f2b179',
+    '1024': '#f59563',
+    '2048': '#edc22e',
+}
+
+color = {
+    '2': '#776e65',
+    '4': '#776e65',
+    '8': '#f9f6f2',
+    '16': '#f9f6f2',
+    '32': '#f9f6f2',
+    '64': '#f9f6f2',
+    '128': '#f9f6f2',
+    '256': '#f9f6f2',
+    '512': '#776e65',
+    '1024': '#f9f6f2',
+    '2048': '#f9f6f2',
+}
+
 score = 0
 
 # Lager vinduet for spillet
@@ -25,14 +54,26 @@ def placeInitialTiles():
                 tilePositions.append((x, y))
                 break
 
+# Lager rutene for spillet
+labels = [[tk.Label(gameFrame, width=2, height=1, borderwidth=25, font=('Arial', 100, 'bold'))
+           for _ in range(4)] for _ in range(4)]
+
 def updateBoard():
     global score
     # Oppdatere GUI basert på statusen til spillbrettet
     for i in range(4):
         for j in range(4):
+            value = gameBoard[i][j]
             text = str(gameBoard[i][j]) if gameBoard[i][j] != '' else ' '
-            label = tk.Label(gameFrame, text=text, width=5, height=2, borderwidth=1.5, relief="ridge")
-            label.grid(row = i, column = j, padx = 3, pady = 3)
+
+            # Henter farge for bakgrunn og tekst basert på tallet i ruten
+            bg = bgColor.get(str(value), '#776E65')
+            fg = color.get(str(value), '#000000') 
+
+            # Oppdaterer rutene med farge og tekst
+            labels[i][j].config(text=text, bg=bg, fg=fg)
+            labels[i][j].grid(row=i, column=j, padx=3, pady=3)
+            
     print(f"Score: {score}") 
 
 # Kaller funksjonene left og updateBoard når venstre pil blir trykket
@@ -71,6 +112,7 @@ def right():
     if not checkForValidMoves():
         gameOver()
 
+# Kaller funksjonene up og updateBoard når pil opp blir trykket
 def onKeyPress(event):
     if event.keysym == 'Up':
         up()
@@ -90,6 +132,7 @@ def up():
     if not checkForValidMoves():
         gameOver()
 
+# Kaller funksjonene down og updateBoard når pil ned blir trykket
 def onKeyPress(event):
     if event.keysym == 'Down':
         down()
