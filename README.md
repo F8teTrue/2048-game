@@ -26,4 +26,8 @@ This game requires Python 3.11 and the Tkinter library, which is usually include
 3. Run the game: `python 2048.py`
 
 ## License
-Distrubuted under the MIT license.
+This project is licensed under the MIT license:
+
+MIT license
+
+See [here](https://opensource.org/licenses/MIT) for the full license text.
