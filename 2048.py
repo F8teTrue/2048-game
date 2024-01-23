@@ -1,5 +1,7 @@
 import tkinter as tk
+from tkinter import messagebox
 import random
+import time
 
 bgColor = {
     ' ': '#BBADA0',
@@ -77,31 +79,34 @@ def updateBoard():
     print(f"Score: {score}") 
 
 # Kaller funksjonene left og updateBoard når venstre pil blir trykket
-def onKeyPress(event):
+def onLeftKeyPress(event):
     if event.keysym == 'Left':
         left()
         updateBoard()
 
-window.bind('<Left>', onKeyPress)
+window.bind('<Left>', onLeftKeyPress)
 
 def left():
+    if not checkForValidMoves():
+        gameOver()
     for i in range(4):
         slide(gameBoard[i])
         merge(gameBoard[i])
         slide(gameBoard[i])
     addNewTile()
-    if not checkForValidMoves():
-        gameOver()
+    
 
 # Kaller funksjonene right og updateBoard når høyre pil blir trykket
-def onKeyPress(event):
+def onRightKeyPress(event):
     if event.keysym == 'Right':
         right()
         updateBoard()
 
-window.bind('<Right>', onKeyPress)
+window.bind('<Right>', onRightKeyPress)
 
 def right():
+    if not checkForValidMoves():
+        gameOver()
     for i in range(4):
         row = gameBoard[i][::-1] 
         slide(row)
@@ -109,18 +114,19 @@ def right():
         slide(row)
         gameBoard[i] = row[::-1] 
     addNewTile()
-    if not checkForValidMoves():
-        gameOver()
+
 
 # Kaller funksjonene up og updateBoard når pil opp blir trykket
-def onKeyPress(event):
+def onUpKeyPress(event):
     if event.keysym == 'Up':
         up()
         updateBoard()
 
-window.bind('<Up>', onKeyPress)
+window.bind('<Up>', onUpKeyPress)
 
 def up():
+    if not checkForValidMoves():
+        gameOver()
     for i in range(4):
         column = [gameBoard[j][i] for j in range(4)]
         slide(column)
@@ -129,18 +135,20 @@ def up():
         for j in range(4):
             gameBoard[j][i] = column[j]
     addNewTile()
-    if not checkForValidMoves():
-        gameOver()
+  
 
 # Kaller funksjonene down og updateBoard når pil ned blir trykket
-def onKeyPress(event):
+def onDownKeyPress(event):
     if event.keysym == 'Down':
         down()
         updateBoard()
 
-window.bind('<Down>', onKeyPress)
+window.bind('<Down>', onDownKeyPress)
 
 def down():
+    if not checkForValidMoves():
+        gameOver()
+
     for i in range(4):
         column = [gameBoard[j][i] for j in range(3, -1, -1)]
         slide(column)
@@ -149,8 +157,6 @@ def down():
         for j in range(3, -1, -1):
             gameBoard[3 - j][i] = column[j]
     addNewTile()
-    if not checkForValidMoves():
-        gameOver()
 
 # Funksjon for å bevege ruter i en rad
 def slide(line):
@@ -205,7 +211,25 @@ def checkForValidMoves():
 def gameOver():
     global score
     updateBoard()
-    print(f'Game over! Final score: {score}')
+    time.sleep(5)
+    playAgain = messagebox.askyesno("Game Over", f'Final score: {score} \n Do you want to play again?')
+
+    if playAgain:
+        reset()
+    else:
+        window.destroy()
+
+def reset():
+    global score
+    score = 0
+    for i in range(4):
+        for j in range(4):
+            gameBoard[i][j] = ''
+    tilePositions.clear()
+    placeInitialTiles()
+    updateBoard()
+    window.focus_force()
+
 
 placeInitialTiles()
 updateBoard()
